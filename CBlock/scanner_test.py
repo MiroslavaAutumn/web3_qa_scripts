@@ -22,13 +22,13 @@ def scanner_test():
     print('c price', price_crowdsale_factory)
 
     # approve tokens for use by a TOKEN FACTORY smart contract
+    token_random_user, t_private_key = CBlock.preset.get_random_user()
     def token_approve():
         approve = celo_token_contract.functions.approve(
             CBlock.preset.FACTORY_TOKEN,
             price_token_factory
         )
-        random_user, priv = CBlock.preset.get_random_user()
-        tx_hash = sign_send_tx(web3, approve, random_user, priv)
+        tx_hash = sign_send_tx(web3, approve, token_random_user, t_private_key)
         print('Approve', 'https://alfajores-blockscout.celo-testnet.org/tx/' + tx_hash.hex())
     try:
         token_approve()
@@ -39,14 +39,14 @@ def scanner_test():
 
     def create_token():
         create_token = token_factory_contract.functions.deployERC20PausableToken(
-            [CBlock.preset.CELO, CBlock.preset.ADMIN],  # token to pay to deploy token and owner address
+            [CBlock.preset.CELO, token_random_user],  # token to pay to deploy token and owner address
             str('stresstoken'),  # token name
             str('STRT'),  # token symbol
             int('18'),  # token decimals
-            [CBlock.preset.ADMIN],  # token owner
+            [token_random_user],  # token owner
             [int('100000000000000000000000')]  # init supply
         )
-        tx_hash = sign_send_tx(web3, create_token, CBlock.preset.ADMIN, CBlock.preset.ADMIN_PRIV)
+        tx_hash = sign_send_tx(web3, create_token, token_random_user, t_private_key)
         print('create token', 'https://alfajores-blockscout.celo-testnet.org/tx/' + tx_hash.hex())
     try:
         create_token()
@@ -55,13 +55,14 @@ def scanner_test():
             error_file.write(f'Token creation failed at {datetime.datetime.now()}\r\n')
         create_token()
 
+    crowdsale_random_user, c_private_key = CBlock.preset.get_random_user()
     def crowdsale_approve():
         # approve tokens for use by a CROWDSALE FACTORY smart contract
         approve = celo_token_contract.functions.approve(
             CBlock.preset.FACTORY_CROWDSALE,
             price_token_factory
         )
-        tx_hash = sign_send_tx(web3, approve, CBlock.preset.ADMIN, CBlock.preset.ADMIN_PRIV)
+        tx_hash = sign_send_tx(web3, approve, crowdsale_random_user, c_private_key)
         print('Approve', 'https://alfajores-blockscout.celo-testnet.org/tx/' + tx_hash.hex())
     try:
         crowdsale_approve()
@@ -72,7 +73,7 @@ def scanner_test():
 
     def create_crowdsale():
         create_crowdsale = crowdsale_factory_contract.functions.deployNonSoftCappableCrowdsale(
-            [CBlock.preset.CELO, CBlock.preset.ADMIN],  # token to pay to deploy token and owner address
+            [CBlock.preset.CELO, crowdsale_random_user],  # token to pay to deploy token and owner address
             CBlock.preset.TOKEN_TO_SALE,  # token to sale
             int('18'),  # token decimals
             int('86400'),  # duration
@@ -80,7 +81,7 @@ def scanner_test():
             [int('1000000000000000000')],  # token rate
             [0, 0]  # limits
         )
-        tx_hash = sign_send_tx(web3, create_crowdsale, CBlock.preset.ADMIN, CBlock.preset.ADMIN_PRIV)
+        tx_hash = sign_send_tx(web3, create_crowdsale, crowdsale_random_user, c_private_key)
         print('create crowdsale', 'https://alfajores-blockscout.celo-testnet.org/tx/' + tx_hash.hex())
     try:
         create_crowdsale()
