@@ -1,3 +1,4 @@
+import time
 import CBlock.preset
 from CBlock.preset import sign_send_tx, web3_init
 import datetime
@@ -91,5 +92,9 @@ def scanner_test():
         create_crowdsale()
 
 
-if __name__ == '__main__':
+for i in range(180):
     scanner_test()
+    time.sleep(1)
+
+#if __name__ == '__main__':
+#    scanner_test()
