@@ -31,11 +31,15 @@ def scanner_test():
         )
         tx_hash = sign_send_tx(web3, approve, token_random_user, t_private_key)
         print('Approve', 'https://alfajores-blockscout.celo-testnet.org/tx/' + tx_hash.hex())
+        tx_receipt = web3.eth.waitForTransactionReceipt(tx_hash.hex())
+        if tx_receipt.get('status'):
+            with open('error_log.txt', 'a') as error_file:
+                error_file.write(f'"A" Token approve transaction status is success {datetime.datetime.now()}\r\n')
     try:
         token_approve()
     except:
         with open('error_log.txt', 'a') as error_file:
-            error_file.write(f'Approve failed at {datetime.datetime.now()}\r\n')
+            error_file.write(f'"B" Token approve failed at {datetime.datetime.now()}\r\n')
         token_approve()
 
     def create_token():
@@ -49,11 +53,15 @@ def scanner_test():
         )
         tx_hash = sign_send_tx(web3, create_token, token_random_user, t_private_key)
         print('create token', 'https://alfajores-blockscout.celo-testnet.org/tx/' + tx_hash.hex())
+        tx_receipt = web3.eth.waitForTransactionReceipt(tx_hash.hex())
+        if tx_receipt.get('status'):
+            with open('error_log.txt', 'a') as error_file:
+                error_file.write(f'"A" Token transaction status is success {datetime.datetime.now()}\r\n')
     try:
         create_token()
     except:
         with open('error_log.txt', 'a') as error_file:
-            error_file.write(f'Token creation failed at {datetime.datetime.now()}\r\n')
+            error_file.write(f'"B" Token creation failed at {datetime.datetime.now()}\r\n')
         create_token()
 
     crowdsale_random_user, c_private_key = CBlock.preset.get_random_user()
@@ -65,11 +73,15 @@ def scanner_test():
         )
         tx_hash = sign_send_tx(web3, approve, crowdsale_random_user, c_private_key)
         print('Approve', 'https://alfajores-blockscout.celo-testnet.org/tx/' + tx_hash.hex())
+        tx_receipt = web3.eth.waitForTransactionReceipt(tx_hash.hex())
+        if tx_receipt.get('status'):
+            with open('error_log.txt', 'a') as error_file:
+                error_file.write(f'"A" Crowdsale approve transaction status is success {datetime.datetime.now()}\r\n')
     try:
         crowdsale_approve()
     except:
         with open('error_log.txt', 'a') as error_file:
-            error_file.write(f'Token creation failed at {datetime.datetime.now()}\r\n')
+            error_file.write(f'"B" Crowdsale approve failed at {datetime.datetime.now()}\r\n')
         crowdsale_approve()
 
     def create_crowdsale():
@@ -84,11 +96,15 @@ def scanner_test():
         )
         tx_hash = sign_send_tx(web3, create_crowdsale, crowdsale_random_user, c_private_key)
         print('create crowdsale', 'https://alfajores-blockscout.celo-testnet.org/tx/' + tx_hash.hex())
+        tx_receipt = web3.eth.waitForTransactionReceipt(tx_hash.hex())
+        if tx_receipt.get('status'):
+            with open('error_log.txt', 'a') as error_file:
+                error_file.write(f'"A" Crowdsale transaction status is success {datetime.datetime.now()}\r\n')
     try:
         create_crowdsale()
     except:
         with open('error_log.txt', 'a') as error_file:
-            error_file.write(f'Token creation failed at {datetime.datetime.now()}\r\n')
+            error_file.write(f'"B" Crowdsale creation failed at {datetime.datetime.now()}\r\n')
         create_crowdsale()
 
 
