@@ -33,12 +33,11 @@ ADDRESSES = {
     SEEDBOX: SEEDBOX_PRIV
 }
 
-VESTING = '0xf0f924AdC1A0Eb89c2124aA00CCaf42c575D5287'
+VESTING = '0x58cB6186554BA29471a6d73C6C17209dB8AD2F91'
 TOKEN = '0xC016ade316C401fFFd2998Da3F00683b2D793350'
 
 GAS_LIMIT = 3000000
 GAS_PRICE = 30
-
 
 def sign_send_tx(web3_interface, contract_tx, address, priv):
     nonce = web3_interface.eth.get_transaction_count(address, 'pending')
@@ -59,7 +58,6 @@ def sign_send_tx(web3_interface, contract_tx, address, priv):
 
 def web3_init():
     return Web3(HTTPProvider('https://data-seed-prebsc-1-s1.binance.org:8545/'))
-
 
 def get_contract_abi(contract_address):
     url = 'https://api-testnet.bscscan.com/api?module=contract&action=getabi&address=' \
