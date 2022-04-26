@@ -15,8 +15,14 @@ if __name__ == '__main__':
         logger.info(f'-------------STEP------------- {i}')
         try:
             if i == 5:  # пропускаем, чтоб в 6 получить за 5 и 6
+                end_time = time.time()
+                time_diff = 60 - (int(end_time) - int(start_time))
+                time.sleep(time_diff)
                 continue
-            if address != Microtuber_vesting.preset.SEEDBOX and i in range(27, 38):  # пропускаем чтоб склеймить потом
+            if address != Microtuber_vesting.preset.SEEDBOX and i in range(28, 35):  # пропускаем чтоб склеймить потом
+                end_time = time.time()
+                time_diff = 60 - (int(end_time) - int(start_time))
+                time.sleep(time_diff)
                 continue
             else:
                 vesting(address, priv, logger)
