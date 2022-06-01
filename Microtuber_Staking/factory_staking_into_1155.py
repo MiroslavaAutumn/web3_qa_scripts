@@ -1,6 +1,6 @@
 import Microtuber_Staking.preset
 from Microtuber_Staking.preset import sign_send_tx, web3_init, get_contract_abi
-
+from datetime import datetime
 
 def create_20plus1155_into_1155_pool():
     web3 = web3_init()
@@ -16,7 +16,7 @@ def create_20plus1155_into_1155_pool():
         Microtuber_Staking.preset.REWARD_TOKEN_ERC_1155),
         abi=reward_token_contract_abi)
 
-    start_time = 1653665630
+    start_time = int(datetime.now().timestamp()) + 60
     duration = [3600, 3600]
     stake_1155_id = 0
     reward_1155_id = 1
@@ -62,7 +62,7 @@ def create_20plus20_into_1155_pool():
         Microtuber_Staking.preset.REWARD_TOKEN_ERC_1155),
         abi=reward_token_contract_abi)
 
-    start_time = 1653665630
+    start_time = int(datetime.now().timestamp()) + 60
     duration = [3600, 3600]
     reward_1155_id = 1
     reward_1155_amount = 1

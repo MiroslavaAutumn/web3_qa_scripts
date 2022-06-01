@@ -1,6 +1,6 @@
 import Microtuber_Staking.preset
 from Microtuber_Staking.preset import sign_send_tx, web3_init, get_contract_abi
-
+from datetime import datetime
 
 def create_20_into_20_pool():
     web3 = web3_init()
@@ -16,10 +16,10 @@ def create_20_into_20_pool():
         Microtuber_Staking.preset.REWARD_TOKEN_ERC_20),
         abi=reward_token_contract_abi)
 
-    start_time = 1653506894
-    end_time = 1653679694
-    reward_per_second = 100000000000000
-    penalty_period = 300  # seconds
+    start_time = int(datetime.now().timestamp()) + 60
+    end_time = int(datetime.now().timestamp()) + 260
+    reward_per_second = 1000000000000000000
+    penalty_period = 120  # seconds
     fee_percentage = 10
     pool_rewards = (end_time - start_time) * reward_per_second
 
@@ -60,11 +60,11 @@ def create_20Plus20_into_20_pool():
         Microtuber_Staking.preset.REWARD_TOKEN_ERC_20),
         abi=reward_token_contract_abi)
 
-    proportion = [1, 2]
-    start_time = 1653506894
-    end_time = 1653679694
-    reward_per_second = 100000000000000
-    penalty_period = 300  # seconds
+    proportion = [1, 1]
+    start_time = int(datetime.now().timestamp()) + 60
+    end_time = int(datetime.now().timestamp()) + 260
+    reward_per_second = 1000000000000000000
+    penalty_period = 120  # seconds
     fee_percentage = 10
     pool_rewards = (end_time - start_time) * reward_per_second
 
