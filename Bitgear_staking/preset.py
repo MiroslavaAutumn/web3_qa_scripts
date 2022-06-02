@@ -43,7 +43,7 @@ def sign_send_tx(web3_interface, contract_tx, address, priv):
 
 
 def web3_init():
-    return Web3(HTTPProvider('https://data-seed-prebsc-1-s1.binance.org:8545/'))
+    return Web3(HTTPProvider('https://rinkeby.infura.io/v3/' + INFURA_PROJECT_ID))
 
 
 def get_contract_abi(contract_address):
