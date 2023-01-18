@@ -16,7 +16,7 @@ USER_2 = secret.USER_2
 USER_2_PRIV = secret.USER_2_PRIV
 
 FACTORY = '0x800516F78e730D1e2c671EFb0071254A7517d046'
-LOTTERY = '0x701b29F79568d8D98dcf4831d79fb61a236B1Dda'
+LOTTERY = '0x4842954941317DDB0a106DFFC8cf2DD9FbE97227'
 TOKEN = '0xf7dFbf73bf9393598664EFE3d13829AdaCAFc167'
 
 GAS_LIMIT = 3000000
@@ -41,7 +41,7 @@ def sign_send_tx(web3_interface, contract_tx, address, priv):
 
 
 def web3_init():
-    return Web3(HTTPProvider('https://data-seed-prebsc-2-s2.binance.org:8545/'))
+    return Web3(HTTPProvider('https://bsc.getblock.io/4ed994ca-64fc-42fb-933c-914c004550a5/testnet/'))
 
 
 def get_contract_abi(contract_address):
