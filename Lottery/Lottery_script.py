@@ -7,8 +7,9 @@ def create_lottery():
     #  lottery params
     A = '1'  # amount of numbers
     B = '1'  # reward for the first 10 addresses
-    R = '123456'  # ref code
+    R = '000000'  # ref code
     amount = int(A + B + R) * 10 ** 10
+    print(amount)
 
     #  creator
     address = Lottery.preset.OWNER
@@ -27,13 +28,32 @@ def create_lottery():
     print('Create lottery', 'https://testnet.bscscan.com/tx/' + tx_hash.hex())
 
 
-def create_bid_bnb():
+def multiple_bid():
+    users = {
+        Lottery.preset.OWNER: {
+            'priv': Lottery.preset.OWNER_PRIV,
+            'daily_amount': 0.0011
+        },
+        Lottery.preset.USER: {
+            'priv': Lottery.preset.USER_PRIV,
+            'daily_amount': 0.0012
+        },
+        Lottery.preset.USER_2: {
+            'priv': Lottery.preset.USER_2_PRIV,
+            'daily_amount': 0.0013
+        }
+    }
+
+    for user, values in users.items():
+        create_bid_bnb(user, values.get('priv'), values.get('daily_amount'))
+
+
+def create_bid_bnb(address=Lottery.preset.USER, priv=Lottery.preset.USER_PRIV, daily_amount=0.001):
     web3 = web3_init()
 
-    address = Lottery.preset.USER
     nonce = web3.eth.getTransactionCount(address)
 
-    daily_amount = 0.001
+    #daily_amount = 0.001
     week_amount = 0.01
     month_amount = 0.1
 
@@ -42,14 +62,25 @@ def create_bid_bnb():
         'nonce': nonce,
         'to': Lottery.preset.LOTTERY,
         'value': web3.toWei(daily_amount, 'ether'),
-        'gas': 30000,
+        'gas': 300000,
         'gasPrice': web3.toWei('10', 'gwei')
     }
-    signed_tx = web3.eth.account.signTransaction(tx, Lottery.preset.USER_PRIV)
+    signed_tx = web3.eth.account.signTransaction(tx, priv)
     tx_hash = web3.eth.sendRawTransaction(signed_tx.rawTransaction)
     print('Daily bid ', 'https://testnet.bscscan.com/tx/' + tx_hash.hex())
+    web3.eth.wait_for_transaction_receipt(tx_hash.hex())
+
+
+def get_balance():
+    web3 = web3_init()
+    address = '0xAa200F0266bC546B1B660326390528e2219F439a'
+    balance = web3.eth.get_balance(address)
+    result = web3.fromWei(balance, 'ether')
+    print(result)
 
 
 if __name__ == '__main__':
     # create_lottery()
-    # create_bid_bnb()
+    #create_bid_bnb()
+    # get_balance()
+    multiple_bid()
