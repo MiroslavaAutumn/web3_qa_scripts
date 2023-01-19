@@ -1,5 +1,6 @@
 import Lottery.preset
 from Lottery.preset import sign_send_tx, web3_init, get_contract_abi
+import Lottery.secret
 
 
 def create_lottery():
@@ -12,7 +13,7 @@ def create_lottery():
     print(amount)
 
     #  creator
-    address = Lottery.preset.OWNER
+    address = Lottery.secret.OWNER
     nonce = web3.eth.getTransactionCount(address)
 
     # build transaction
@@ -23,23 +24,23 @@ def create_lottery():
         'gas': 3000000,
         'gasPrice': web3.toWei('10', 'gwei')
     }
-    signed_tx = web3.eth.account.signTransaction(tx, Lottery.preset.OWNER_PRIV)
+    signed_tx = web3.eth.account.signTransaction(tx, Lottery.secret.OWNER_PRIV)
     tx_hash = web3.eth.sendRawTransaction(signed_tx.rawTransaction)
     print('Create lottery', 'https://testnet.bscscan.com/tx/' + tx_hash.hex())
 
 
 def multiple_bid():
     users = {
-        Lottery.preset.OWNER: {
-            'priv': Lottery.preset.OWNER_PRIV,
+        Lottery.secret.OWNER: {
+            'priv': Lottery.secret.OWNER_PRIV,
             'daily_amount': 0.0011
         },
-        Lottery.preset.USER: {
-            'priv': Lottery.preset.USER_PRIV,
+        Lottery.secret.USER: {
+            'priv': Lottery.secret.USER_PRIV,
             'daily_amount': 0.0012
         },
-        Lottery.preset.USER_2: {
-            'priv': Lottery.preset.USER_2_PRIV,
+        Lottery.secret.USER_2: {
+            'priv': Lottery.secret.USER_2_PRIV,
             'daily_amount': 0.0013
         }
     }
@@ -48,12 +49,12 @@ def multiple_bid():
         create_bid_bnb(user, values.get('priv'), values.get('daily_amount'))
 
 
-def create_bid_bnb(address=Lottery.preset.USER, priv=Lottery.preset.USER_PRIV, daily_amount=0.001):
+def create_bid_bnb(address=Lottery.secret.USER, priv=Lottery.secret.USER_PRIV, daily_amount=0.001):
     web3 = web3_init()
 
     nonce = web3.eth.getTransactionCount(address)
 
-    #daily_amount = 0.001
+    # daily_amount = 0.001
     week_amount = 0.01
     month_amount = 0.1
 
@@ -62,7 +63,7 @@ def create_bid_bnb(address=Lottery.preset.USER, priv=Lottery.preset.USER_PRIV, d
         'nonce': nonce,
         'to': Lottery.preset.LOTTERY,
         'value': web3.toWei(daily_amount, 'ether'),
-        'gas': 300000,
+        'gas': 3000000,
         'gasPrice': web3.toWei('10', 'gwei')
     }
     signed_tx = web3.eth.account.signTransaction(tx, priv)
@@ -81,6 +82,6 @@ def get_balance():
 
 if __name__ == '__main__':
     # create_lottery()
-    #create_bid_bnb()
+    create_bid_bnb()
     # get_balance()
-    multiple_bid()
+    # multiple_bid()
