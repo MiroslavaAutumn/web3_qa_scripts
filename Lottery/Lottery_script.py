@@ -7,6 +7,12 @@ import Lottery.secret
 
 def create_lottery():
     web3 = web3_init()
+
+    factory_abi = get_contract_abi(Lottery.preset.FACTORY)
+    factory_contract = web3.eth.contract(address=web3.toChecksumAddress(
+        Lottery.preset.FACTORY),
+        abi=factory_abi)
+
     #  lottery params
     A = '1'  # amount of numbers
     B = '1'  # reward for the first 10 addresses
@@ -30,13 +36,17 @@ def create_lottery():
     tx_hash = web3.eth.sendRawTransaction(signed_tx.rawTransaction)
     print('Create lottery', 'https://testnet.bscscan.com/tx/' + tx_hash.hex())
 
+    receipt = web3.eth.wait_for_transaction_receipt(tx_hash)
+    event_deployed = factory_contract.events.DeployedLottery().processReceipt(receipt)
+    print('Lottery address', event_deployed[0].get('args').get('lottery'))
+
 
 def multiple_bid():
     basic_bid = 1000000000000000
     d = 1
     w = 10
     m = 100
-    multiplier = w  # set the required multiplier
+    multiplier = d  # set the required multiplier
 
     users = {
         Lottery.secret.OWNER: {
@@ -161,9 +171,9 @@ def get_balance():
 
 
 if __name__ == '__main__':
-    # create_lottery()
+    create_lottery()
     # create_bid_bnb()
-    multiple_bid()
+    # multiple_bid()
     # create_bid_LTON()
     # calc_lotteries()
     # get_balance()
