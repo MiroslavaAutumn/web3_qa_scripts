@@ -30,18 +30,49 @@ def create_lottery():
 
 
 def multiple_bid():
+
+    basic_bid = 0.001
+    d = 1
+    w = 10
+    m = 100
+    multiplier = d  # set the required multiplier
+
     users = {
         Lottery.secret.OWNER: {
             'priv': Lottery.secret.OWNER_PRIV,
-            'daily_amount': 0.0011
+            'daily_amount': (basic_bid + 0.0001) * multiplier
         },
         Lottery.secret.USER: {
             'priv': Lottery.secret.USER_PRIV,
-            'daily_amount': 0.0012
+            'daily_amount': (basic_bid + 0.0002) * multiplier
         },
         Lottery.secret.USER_2: {
             'priv': Lottery.secret.USER_2_PRIV,
-            'daily_amount': 0.0013
+            'daily_amount': (basic_bid + 0.0003) * multiplier
+        },
+        Lottery.secret.USER_3: {
+            'priv': Lottery.secret.USER_3_PRIV,
+            'daily_amount': (basic_bid + 0.0004) * multiplier
+        },
+        Lottery.secret.USER_4: {
+            'priv': Lottery.secret.USER_4_PRIV,
+            'daily_amount': (basic_bid + 0.0005) * multiplier
+        },
+        Lottery.secret.USER_5: {
+            'priv': Lottery.secret.USER_5_PRIV,
+            'daily_amount': (basic_bid + 0.0006) * multiplier
+        },
+        Lottery.secret.USER_6: {
+            'priv': Lottery.secret.USER_6_PRIV,
+            'daily_amount': (basic_bid + 0.0007) * multiplier
+        },
+        Lottery.secret.USER_7: {
+            'priv': Lottery.secret.USER_7_PRIV,
+            'daily_amount': (basic_bid + 0.0008) * multiplier
+        },
+        Lottery.secret.USER_8: {
+            'priv': Lottery.secret.USER_8_PRIV,
+            'daily_amount': (basic_bid + 0.0009) * multiplier
         }
     }
 
@@ -49,7 +80,7 @@ def multiple_bid():
         create_bid_bnb(user, values.get('priv'), values.get('daily_amount'))
 
 
-def create_bid_bnb(address=Lottery.secret.USER, priv=Lottery.secret.USER_PRIV, daily_amount=0.001):
+def create_bid_bnb(address=Lottery.secret.USER, priv=Lottery.secret.USER_PRIV, daily_amount=0.0011):
     web3 = web3_init()
 
     nonce = web3.eth.getTransactionCount(address)
@@ -82,6 +113,6 @@ def get_balance():
 
 if __name__ == '__main__':
     # create_lottery()
-    create_bid_bnb()
+    # create_bid_bnb()
     # get_balance()
-    # multiple_bid()
+    multiple_bid()
