@@ -1,3 +1,5 @@
+import time
+
 import Lottery.preset
 from Lottery.preset import sign_send_tx, web3_init, get_contract_abi
 import Lottery.secret
@@ -30,70 +32,70 @@ def create_lottery():
 
 
 def multiple_bid():
-
-    basic_bid = 0.001
+    basic_bid = 1000000000000000
     d = 1
     w = 10
     m = 100
-    multiplier = d  # set the required multiplier
+    multiplier = w  # set the required multiplier
 
     users = {
         Lottery.secret.OWNER: {
             'priv': Lottery.secret.OWNER_PRIV,
-            'daily_amount': (basic_bid + 0.0001) * multiplier
+            'amount': (basic_bid + 100000000000000) * multiplier
         },
         Lottery.secret.USER: {
             'priv': Lottery.secret.USER_PRIV,
-            'daily_amount': (basic_bid + 0.0002) * multiplier
+            'amount': (basic_bid + 200000000000000) * multiplier
         },
         Lottery.secret.USER_2: {
             'priv': Lottery.secret.USER_2_PRIV,
-            'daily_amount': (basic_bid + 0.0003) * multiplier
+            'amount': (basic_bid + 300000000000000) * multiplier
         },
         Lottery.secret.USER_3: {
             'priv': Lottery.secret.USER_3_PRIV,
-            'daily_amount': (basic_bid + 0.0004) * multiplier
+            'amount': (basic_bid + 400000000000000) * multiplier
         },
         Lottery.secret.USER_4: {
             'priv': Lottery.secret.USER_4_PRIV,
-            'daily_amount': (basic_bid + 0.0005) * multiplier
+            'amount': (basic_bid + 500000000000000) * multiplier
         },
         Lottery.secret.USER_5: {
             'priv': Lottery.secret.USER_5_PRIV,
-            'daily_amount': (basic_bid + 0.0006) * multiplier
+            'amount': (basic_bid + 600000000000000) * multiplier
         },
         Lottery.secret.USER_6: {
             'priv': Lottery.secret.USER_6_PRIV,
-            'daily_amount': (basic_bid + 0.0007) * multiplier
+            'amount': (basic_bid + 700000000000000) * multiplier
         },
         Lottery.secret.USER_7: {
             'priv': Lottery.secret.USER_7_PRIV,
-            'daily_amount': (basic_bid + 0.0008) * multiplier
+            'amount': (basic_bid + 800000000000000) * multiplier
         },
         Lottery.secret.USER_8: {
             'priv': Lottery.secret.USER_8_PRIV,
-            'daily_amount': (basic_bid + 0.0009) * multiplier
+            'amount': (basic_bid + 900000000000000) * multiplier
         }
     }
 
     for user, values in users.items():
-        create_bid_bnb(user, values.get('priv'), values.get('daily_amount'))
+        # create_bid_bnb(user, values.get('priv'), values.get('amount'))
+        create_bid_LTON(user, values.get('priv'), values.get('amount'))
 
 
-def create_bid_bnb(address=Lottery.secret.USER, priv=Lottery.secret.USER_PRIV, daily_amount=0.0011):
+def create_bid_bnb(address=Lottery.secret.USER, priv=Lottery.secret.USER_PRIV, amount=1000000000000000):
     web3 = web3_init()
 
     nonce = web3.eth.getTransactionCount(address)
 
     # daily_amount = 0.001
-    week_amount = 0.01
-    month_amount = 0.1
+    week_amount = 10000000000000000
+    month_amount = 100000000000000000
 
     # build transaction
     tx = {
         'nonce': nonce,
         'to': Lottery.preset.LOTTERY,
-        'value': web3.toWei(daily_amount, 'ether'),
+        'value': web3.toWei(amount, 'wei'),
         'gas': 3000000,
         'gasPrice': web3.toWei('10', 'gwei')
     }
@@ -101,6 +103,37 @@ def create_bid_bnb(address=Lottery.secret.USER, priv=Lottery.secret.USER_PRIV, d
     tx_hash = web3.eth.sendRawTransaction(signed_tx.rawTransaction)
     print('Daily bid ', 'https://testnet.bscscan.com/tx/' + tx_hash.hex())
     web3.eth.wait_for_transaction_receipt(tx_hash.hex())
+
+
+def create_bid_LTON(address=Lottery.secret.USER, priv=Lottery.secret.USER_PRIV, amount=None):
+    web3 = web3_init()
+    token_abi = get_contract_abi(Lottery.preset.TOKEN)
+    token = web3.eth.contract(address=web3.toChecksumAddress(
+        Lottery.preset.TOKEN),
+        abi=token_abi)
+
+    if amount is None:
+        w = 100
+        m = 1000
+        amount = w  # set the required lottery type
+    print(amount)
+
+    approve = token.functions.approve(
+        Lottery.preset.TOKEN,
+        amount
+    )
+
+    tx_hash = sign_send_tx(web3, approve, address, priv)
+
+    print('Approve', 'https://testnet.bscscan.com/tx/' + tx_hash.hex())
+    web3.eth.wait_for_transaction_receipt(tx_hash.hex())
+
+    transfer = token.functions.transfer(
+        Lottery.preset.LOTTERY,
+        amount
+    )
+    tx_hash = sign_send_tx(web3, transfer, address, priv)
+    print('Transfer', 'https://testnet.bscscan.com/tx/' + tx_hash.hex())
 
 
 def calc_lotteries():
@@ -130,6 +163,7 @@ def get_balance():
 if __name__ == '__main__':
     # create_lottery()
     # create_bid_bnb()
+    multiple_bid()
+    # create_bid_LTON()
+    # calc_lotteries()
     # get_balance()
-    # multiple_bid()
-    calc_lotteries()
