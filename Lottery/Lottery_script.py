@@ -103,6 +103,22 @@ def create_bid_bnb(address=Lottery.secret.USER, priv=Lottery.secret.USER_PRIV, d
     web3.eth.wait_for_transaction_receipt(tx_hash.hex())
 
 
+def calc_lotteries():
+    web3 = web3_init()
+
+    factory_abi = get_contract_abi(Lottery.preset.FACTORY)
+    factory_contract = web3.eth.contract(address=web3.toChecksumAddress(
+        Lottery.preset.FACTORY),
+        abi=factory_abi)
+
+    calc_lottery = factory_contract.functions.calcLotteries(
+        [Lottery.preset.LOTTERY]
+    )
+    tx_hash = sign_send_tx(web3, calc_lottery, Lottery.secret.OWNER,
+                           Lottery.secret.OWNER_PRIV)
+    print('previous day calculation', 'https://testnet.bscscan.com/tx/' + tx_hash.hex())
+
+
 def get_balance():
     web3 = web3_init()
     address = '0xAa200F0266bC546B1B660326390528e2219F439a'
@@ -115,4 +131,5 @@ if __name__ == '__main__':
     # create_lottery()
     # create_bid_bnb()
     # get_balance()
-    multiple_bid()
+    # multiple_bid()
+    calc_lotteries()
