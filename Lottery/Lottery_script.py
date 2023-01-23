@@ -22,7 +22,7 @@ def create_bid_bnb(address=Lottery.secret.USER, priv=Lottery.secret.USER_PRIV, a
     }
     signed_tx = web3.eth.account.signTransaction(tx, priv)
     tx_hash = web3.eth.sendRawTransaction(signed_tx.rawTransaction)
-    print('Daily bid ', 'https://testnet.bscscan.com/tx/' + tx_hash.hex())
+    print(' Bid ', 'https://testnet.bscscan.com/tx/' + tx_hash.hex())
     web3.eth.wait_for_transaction_receipt(tx_hash.hex())
 
 
@@ -56,6 +56,7 @@ def create_bid_LTON(address=Lottery.secret.USER, priv=Lottery.secret.USER_PRIV, 
     tx_hash = sign_send_tx(web3, transfer, address, priv)
     print('Transfer', 'https://testnet.bscscan.com/tx/' + tx_hash.hex())
 
+
 def multiple_bid():
     basic_bid = 1000000000000000
     d = 1
@@ -66,39 +67,39 @@ def multiple_bid():
     users = {
         Lottery.secret.OWNER: {
             'priv': Lottery.secret.OWNER_PRIV,
-            'amount': (basic_bid + 100000000000000) * multiplier
+            'amount': basic_bid * multiplier + 100000000000000
         },
         Lottery.secret.USER: {
             'priv': Lottery.secret.USER_PRIV,
-            'amount': (basic_bid + 200000000000000) * multiplier
+            'amount': basic_bid * multiplier + 200000000000000
         },
         Lottery.secret.USER_2: {
             'priv': Lottery.secret.USER_2_PRIV,
-            'amount': (basic_bid + 300000000000000) * multiplier
+            'amount': basic_bid * multiplier + 300000000000000
         },
         Lottery.secret.USER_3: {
             'priv': Lottery.secret.USER_3_PRIV,
-            'amount': (basic_bid + 400000000000000) * multiplier
+            'amount': basic_bid * multiplier + 400000000000000
         },
         Lottery.secret.USER_4: {
             'priv': Lottery.secret.USER_4_PRIV,
-            'amount': (basic_bid + 500000000000000) * multiplier
+            'amount': basic_bid * multiplier + 500000000000000
         },
         Lottery.secret.USER_5: {
             'priv': Lottery.secret.USER_5_PRIV,
-            'amount': (basic_bid + 600000000000000) * multiplier
+            'amount': basic_bid * multiplier + 600000000000000
         },
         Lottery.secret.USER_6: {
             'priv': Lottery.secret.USER_6_PRIV,
-            'amount': (basic_bid + 700000000000000) * multiplier
+            'amount': basic_bid * multiplier + 700000000000000
         },
         Lottery.secret.USER_7: {
             'priv': Lottery.secret.USER_7_PRIV,
-            'amount': (basic_bid + 800000000000000) * multiplier
+            'amount': basic_bid * multiplier + 800000000000000
         },
         Lottery.secret.USER_8: {
             'priv': Lottery.secret.USER_8_PRIV,
-            'amount': (basic_bid + 900000000000000) * multiplier
+            'amount': basic_bid * multiplier + 900000000000000
         }
     }
 
@@ -109,6 +110,5 @@ def multiple_bid():
 
 if __name__ == '__main__':
     # create_bid_bnb()
-    # multiple_bid()
     # create_bid_LTON()
-    # get_balance()
+    multiple_bid()
