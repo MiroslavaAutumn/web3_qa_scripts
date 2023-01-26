@@ -1,3 +1,4 @@
+import time
 import Lottery.preset
 from Lottery.preset import sign_send_tx, web3_init, get_contract_abi
 import Lottery.secret
@@ -62,50 +63,56 @@ def multiple_bid():
     d = 1
     w = 10
     m = 100
-    multiplier = d  # set the required multiplier
-
-    users = {
-        Lottery.secret.OWNER: {
-            'priv': Lottery.secret.OWNER_PRIV,
-            'amount': basic_bid * multiplier + 100000000000000
-        },
-        Lottery.secret.USER: {
-            'priv': Lottery.secret.USER_PRIV,
-            'amount': basic_bid * multiplier + 200000000000000
-        },
-        Lottery.secret.USER_2: {
-            'priv': Lottery.secret.USER_2_PRIV,
-            'amount': basic_bid * multiplier + 300000000000000
-        },
-        Lottery.secret.USER_3: {
-            'priv': Lottery.secret.USER_3_PRIV,
-            'amount': basic_bid * multiplier + 400000000000000
-        },
-        Lottery.secret.USER_4: {
-            'priv': Lottery.secret.USER_4_PRIV,
-            'amount': basic_bid * multiplier + 500000000000000
-        },
-        Lottery.secret.USER_5: {
-            'priv': Lottery.secret.USER_5_PRIV,
-            'amount': basic_bid * multiplier + 600000000000000
-        },
-        Lottery.secret.USER_6: {
-            'priv': Lottery.secret.USER_6_PRIV,
-            'amount': basic_bid * multiplier + 700000000000000
-        },
-        Lottery.secret.USER_7: {
-            'priv': Lottery.secret.USER_7_PRIV,
-            'amount': basic_bid * multiplier + 800000000000000
-        },
-        Lottery.secret.USER_8: {
-            'priv': Lottery.secret.USER_8_PRIV,
-            'amount': basic_bid * multiplier + 900000000000000
+    multiplier = w  # set the required multiplier
+    for i in range(1):  # cycle count
+        users = {
+            Lottery.secret.OWNER: {
+                'priv': Lottery.secret.OWNER_PRIV,
+                'amount': basic_bid * multiplier + 100000000000000
+            },
+            Lottery.secret.USER: {
+                'priv': Lottery.secret.USER_PRIV,
+                'amount': basic_bid * multiplier + 200000000000000
+            },
+            Lottery.secret.USER_2: {
+                'priv': Lottery.secret.USER_2_PRIV,
+                'amount': basic_bid * multiplier + 300000000000000
+            },
+            Lottery.secret.USER_3: {
+                'priv': Lottery.secret.USER_3_PRIV,
+                'amount': basic_bid * multiplier + 400000000000000
+            },
+            Lottery.secret.USER_4: {
+                'priv': Lottery.secret.USER_4_PRIV,
+                'amount': basic_bid * multiplier + 500000000000000
+            },
+            Lottery.secret.USER_5: {
+                'priv': Lottery.secret.USER_5_PRIV,
+                'amount': basic_bid * multiplier + 600000000000000
+            },
+            Lottery.secret.USER_6: {
+                'priv': Lottery.secret.USER_6_PRIV,
+                'amount': basic_bid * multiplier + 700000000000000
+            },
+            Lottery.secret.USER_7: {
+                'priv': Lottery.secret.USER_7_PRIV,
+                'amount': basic_bid * multiplier + 800000000000000
+            },
+            Lottery.secret.USER_8: {
+                'priv': Lottery.secret.USER_8_PRIV,
+                'amount': basic_bid * multiplier + 900000000000000
+            }
         }
-    }
 
-    for user, values in users.items():
-        create_bid_bnb(user, values.get('priv'), values.get('amount'))
-        #create_bid_LTON(user, values.get('priv'), values.get('amount'))
+        for user, values in users.items():
+            create_bid_bnb(user, values.get('priv'), values.get('amount'))
+            # create_bid_LTON(user, values.get('priv'), values.get('amount'))
+
+        ### Use time.sleep if you want to make transactions faster.
+        ### To do this, comment out "web3.eth.wait_for_transaction_receipt" in the bid creation function
+        ### DO NOT CHANGE THE DURATION OF TIME SLEEP BELOW 8
+
+        # time.sleep(8)
 
 
 if __name__ == '__main__':
