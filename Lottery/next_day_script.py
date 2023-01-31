@@ -22,8 +22,8 @@ def change_fake_time():
 
     if get_fake_time_status == False:
         change_fake_time_listen = lottery_contract.functions.changeFakeTimeListen()
-        tx_hash = sign_send_tx(web3, change_fake_time_listen, Lottery.secret.OWNER,
-                               Lottery.secret.OWNER_PRIV)
+        tx_hash = sign_send_tx(web3, change_fake_time_listen, Lottery.secret.USER_1,
+                               Lottery.secret.USER_1_PRIV)
         print('switch', 'https://testnet.bscscan.com/tx/' + tx_hash.hex())
     else:
         print('Status is already true')
@@ -40,16 +40,30 @@ def set_next_day():
         print(next_day, 'First time set')
     else:
         next_day = int(get_current_timestamp) + 86400
-        print('Time set')
+        print('Time set', next_day)
 
     change_fake_timestamp = lottery_contract.functions.changeFakeTimestamp(
         next_day
     )
-    tx_hash = sign_send_tx(web3, change_fake_timestamp, Lottery.secret.OWNER,
-                           Lottery.secret.OWNER_PRIV)
+    tx_hash = sign_send_tx(web3, change_fake_timestamp, Lottery.secret.USER_1,
+                           Lottery.secret.USER_1_PRIV)
     print('next day', 'https://testnet.bscscan.com/tx/' + tx_hash.hex())
 
 
+def set_custom_day():
+    lottery_contract, web3 = lottery_init()
+
+    custom_timestamp = 1677686400
+
+    change_fake_timestamp = lottery_contract.functions.changeFakeTimestamp(
+        custom_timestamp
+    )
+    tx_hash = sign_send_tx(web3, change_fake_timestamp, Lottery.secret.USER_1,
+                           Lottery.secret.USER_1_PRIV)
+    print('custom day', 'https://testnet.bscscan.com/tx/' + tx_hash.hex())
+
+
 if __name__ == '__main__':
-    set_next_day()
+    #set_next_day()
     #change_fake_time()
+    set_custom_day()
